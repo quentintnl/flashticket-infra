@@ -46,7 +46,7 @@ variable "vpc_cidr" {
 variable "admin_cidr" {
   description = "Réseau autorisé à se connecter en SSH au segment public (ex. ton IP en /32)"
   type        = string
-  default     = "78.241.183.206/32"
+  default     = "203.0.113.10/32" # À REMPLACER par ton IP publique
 
   validation {
     condition     = can(cidrhost(var.admin_cidr, 0)) && var.admin_cidr != "0.0.0.0/0"
@@ -178,14 +178,11 @@ resource "aws_default_security_group" "default" {
 # -----------------------------------------------------------------------------
 # Groupes de sécurité
 # (règles déclarées séparément pour éviter les dépendances circulaires)
-#
-# Les descriptions restent en ASCII, sans accent ni apostrophe : AWS les refuse
-# à l'apply, alors que terraform validate et terraform plan ne le signalent pas.
 # -----------------------------------------------------------------------------
 
 resource "aws_security_group" "public" {
   name        = "flashticket-public"
-  description = "Segment public : HTTPS depuis Internet, SSH depuis le reseau admin"
+  description = "Segment public : HTTPS depuis Internet, SSH depuis l'admin"
   vpc_id      = aws_vpc.main.id
 
   tags = {
@@ -195,7 +192,7 @@ resource "aws_security_group" "public" {
 
 resource "aws_security_group" "app" {
   name        = "flashticket-app"
-  description = "Segment applicatif : accepte uniquement le segment public"
+  description = "Segment applicatif : n'accepte que le segment public"
   vpc_id      = aws_vpc.main.id
 
   tags = {
@@ -205,7 +202,7 @@ resource "aws_security_group" "app" {
 
 resource "aws_security_group" "data" {
   name        = "flashticket-data"
-  description = "Segment donnees : accepte uniquement le segment applicatif, port de la base"
+  description = "Segment données : n'accepte que l'applicatif, sur le port de la base"
   vpc_id      = aws_vpc.main.id
 
   tags = {
@@ -226,7 +223,7 @@ resource "aws_vpc_security_group_ingress_rule" "public_https" {
 
 resource "aws_vpc_security_group_ingress_rule" "public_ssh" {
   security_group_id = aws_security_group.public.id
-  description       = "SSH depuis le reseau admin uniquement"
+  description       = "SSH depuis le réseau d'administration uniquement"
   ip_protocol       = "tcp"
   from_port         = 22
   to_port           = 22
@@ -246,7 +243,7 @@ resource "aws_vpc_security_group_egress_rule" "public_to_app" {
 
 resource "aws_vpc_security_group_egress_rule" "public_ssh_to_app" {
   security_group_id            = aws_security_group.public.id
-  description                  = "Rebond SSH vers le segment applicatif"
+  description                  = "Rebond SSH vers l'applicatif"
   ip_protocol                  = "tcp"
   from_port                    = 22
   to_port                      = 22
@@ -255,7 +252,7 @@ resource "aws_vpc_security_group_egress_rule" "public_ssh_to_app" {
 
 resource "aws_vpc_security_group_egress_rule" "public_https_out" {
   security_group_id = aws_security_group.public.id
-  description       = "Mises a jour (HTTPS sortant)"
+  description       = "Mises à jour (HTTPS sortant)"
   ip_protocol       = "tcp"
   from_port         = 443
   to_port           = 443
@@ -286,7 +283,7 @@ resource "aws_vpc_security_group_ingress_rule" "app_ssh_from_public" {
 
 resource "aws_vpc_security_group_egress_rule" "app_to_data" {
   security_group_id            = aws_security_group.app.id
-  description                  = "Vers la base de donnees"
+  description                  = "Vers la base de données"
   ip_protocol                  = "tcp"
   from_port                    = var.data_port
   to_port                      = var.data_port
@@ -295,7 +292,7 @@ resource "aws_vpc_security_group_egress_rule" "app_to_data" {
 
 resource "aws_vpc_security_group_egress_rule" "app_https_out" {
   security_group_id = aws_security_group.app.id
-  description       = "Mises a jour (HTTPS sortant, via NAT si ajoute)"
+  description       = "Mises à jour (HTTPS sortant, via NAT si ajouté)"
   ip_protocol       = "tcp"
   from_port         = 443
   to_port           = 443
@@ -306,7 +303,7 @@ resource "aws_vpc_security_group_egress_rule" "app_https_out" {
 
 resource "aws_vpc_security_group_ingress_rule" "data_from_app" {
   security_group_id            = aws_security_group.data.id
-  description                  = "Base de donnees depuis le segment applicatif uniquement"
+  description                  = "Base de données depuis l'applicatif uniquement"
   ip_protocol                  = "tcp"
   from_port                    = var.data_port
   to_port                      = var.data_port
