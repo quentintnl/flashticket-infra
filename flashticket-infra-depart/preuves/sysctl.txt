@@ -1,0 +1,5 @@
+net.ipv4.tcp_syncookies = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.ip_forward = 0
+kernel.kptr_restrict = 2
+kernel.dmesg_restrict = 1

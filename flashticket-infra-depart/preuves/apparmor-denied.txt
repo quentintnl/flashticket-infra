@@ -1,0 +1,1 @@
+Nov 06 15:05:00 gracious-bee kernel: audit: type=1400 audit(1793977500.826:349): apparmor="DENIED" operation="open" class="file" profile="/opt/ticketpdf/bin/ticketpdf" name="/etc/ssh/sshd_config" pid=229353 comm="ticketpdf" requested_mask="r" denied_mask="r" fsuid=999 ouid=0

@@ -1,0 +1,10 @@
+● ticketpdf.service - FlashTicket ticketpdf
+     Loaded: loaded (/etc/systemd/system/ticketpdf.service; enabled; preset: enabled)
+     Active: active (running) since Fri 2026-11-06 14:39:06 UTC; 10min ago
+ Invocation: 94f80722bb904ea68bf309a910958ca6
+   Main PID: 198235 (ticketpdf)
+      Tasks: 3 (limit: 975)
+     Memory: 1.3M (peak: 2.6M)
+        CPU: 41ms
+     CGroup: /system.slice/ticketpdf.service
+             └─198235 /opt/ticketpdf/bin/ticketpdf

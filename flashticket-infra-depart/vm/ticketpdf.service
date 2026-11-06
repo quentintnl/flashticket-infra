@@ -1,0 +1,56 @@
+[Unit]
+Description=FlashTicket ticketpdf
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=ticketpdf
+Group=ticketpdf
+ExecStart=/opt/ticketpdf/bin/ticketpdf
+Restart=always
+RestartSec=2
+
+# Données
+WorkingDirectory=/var/lib/ticketpdf
+StateDirectory=ticketpdf
+StateDirectoryMode=0750
+UMask=0027
+
+# Privilèges
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictSUIDSGID=yes
+PrivateUsers=yes
+RemoveIPC=yes
+KeyringMode=private
+
+# Système de fichiers
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+DevicePolicy=closed
+
+# Noyau et système
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+ProcSubset=pid
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+MemoryDenyWriteExecute=yes
+
+# Réseau et appels système
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+
+[Install]
+WantedBy=multi-user.target

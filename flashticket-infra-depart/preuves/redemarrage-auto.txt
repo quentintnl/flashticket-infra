@@ -1,0 +1,9 @@
+Nov 06 13:39:02 gracious-bee systemd[1]: Started ticketpdf.service - FlashTicket ticketpdf.
+Nov 06 13:41:53 gracious-bee systemd[1]: Started ticketpdf.service - FlashTicket ticketpdf.
+Nov 06 13:43:04 gracious-bee systemd[1]: ticketpdf.service: Main process exited, code=killed, status=9/KILL
+Nov 06 13:43:06 gracious-bee systemd[1]: ticketpdf.service: Scheduled restart job, restart counter is at 1.
+Nov 06 13:43:06 gracious-bee systemd[1]: Started ticketpdf.service - FlashTicket ticketpdf.
+Nov 06 14:01:31 gracious-bee systemd[1]: Started ticketpdf.service - FlashTicket ticketpdf.
+Nov 06 14:02:48 gracious-bee systemd[1]: Started ticketpdf.service - FlashTicket ticketpdf.
+Nov 06 14:03:53 gracious-bee systemd[1]: Started ticketpdf.service - FlashTicket ticketpdf.
+Nov 06 14:39:06 gracious-bee systemd[1]: Started ticketpdf.service - FlashTicket ticketpdf.

@@ -1,0 +1,14 @@
+# Last Modified: Fri Nov  6 14:02:07 2026
+include <tunables/global>
+
+/opt/ticketpdf/bin/ticketpdf {
+  include <abstractions/apache2-common>
+  include <abstractions/base>
+
+  network inet stream,
+
+  /etc/ticketpdf/tls/* r,
+  /opt/ticketpdf/bin/ticketpdf mr,
+  /var/lib/ticketpdf/** rw,
+
+}
